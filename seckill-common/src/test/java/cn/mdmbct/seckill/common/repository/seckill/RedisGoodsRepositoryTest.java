@@ -62,13 +62,13 @@ public class RedisGoodsRepositoryTest {
         );
 
 
-//        this.repository = new RedisGoodsRepository(
-//                jedisPool,
-//                lock,
-//                seckill,
-//                "seckill:test_goods_"
-//        );
-        this.repository = new LocalGoodsRepository(lock, seckill);
+        this.repository = new RedisGoodsRepository(
+                jedisPool,
+                lock,
+                seckill,
+                "seckill:test_goods_"
+        );
+//        this.repository = new LocalGoodsRepository(lock, seckill);
     }
 
     @Test
@@ -102,7 +102,7 @@ public class RedisGoodsRepositoryTest {
             e.printStackTrace();
         }
 
-        getLocalRepositoryGoods((LocalGoodsRepository) repository);
+//        getLocalRepositoryGoods((LocalGoodsRepository) repository);
 
     }
 
@@ -138,7 +138,7 @@ public class RedisGoodsRepositoryTest {
             Thread.sleep(1000);
         }
 
-        getLocalRepositoryGoods((LocalGoodsRepository) repository);
+//        getLocalRepositoryGoods((LocalGoodsRepository) repository);
     }
 
     @Test

@@ -20,58 +20,34 @@ public class JedisRedisOps implements RedisOps {
 
     @Override
     public void set(String key, String value, long expire, TimeUnit timeUnit) {
-        Jedis jedis = null;
-        try {
-            jedis = jedisPool.getResource();
+        //  try-with-resources statement => try中的资源自动关闭
+        try (Jedis jedis = jedisPool.getResource()) {
             if (expire <= 0) {
                 set(key, value);
             } else {
                 jedis.psetex(key, timeUnit.toMillis(expire), value);
-            }
-        } finally {
-            if (jedis != null) {
-                jedis.close();
             }
         }
     }
 
     @Override
     public void set(String key, String value) {
-        Jedis jedis = null;
-        try {
-            jedis = jedisPool.getResource();
+        try (Jedis jedis = jedisPool.getResource()) {
             jedis.set(key, value);
-        } finally {
-            if (jedis != null) {
-                jedis.close();
-            }
         }
     }
 
     @Override
     public Long incr(String key) {
-        Jedis jedis = null;
-        try {
-            jedis = jedisPool.getResource();
+        try (Jedis jedis = jedisPool.getResource()) {
             return jedis.incr(key);
-        } finally {
-            if (jedis != null) {
-                jedis.close();
-            }
         }
     }
 
     @Override
     public Long decr(String key) {
-        Jedis jedis = null;
-        try {
-            jedis = jedisPool.getResource();
+        try (Jedis jedis = jedisPool.getResource()) {
             return jedis.decr(key);
-        } finally {
-            if (jedis != null) {
-                jedis.close();
-                System.out.println(jedis.get("szt_rail_transit_hash_last"));
-            }
         }
     }
 

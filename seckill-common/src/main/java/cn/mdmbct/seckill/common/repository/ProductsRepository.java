@@ -29,9 +29,9 @@ public interface ProductsRepository {
     /**
      * 修改奖品数量
      * @param id 奖品id
-     * @param count 修改数量
+     * @param newCount 修改数量
      * @return 是否修改成功
      */
-    CompeteResult updateCount(String id, int count);
+    CompeteResult updateCount(String id, int newCount);
 
 }

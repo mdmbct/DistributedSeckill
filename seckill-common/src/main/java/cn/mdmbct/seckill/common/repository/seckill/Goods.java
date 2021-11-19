@@ -16,6 +16,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Setter
 @Getter
 @EqualsAndHashCode
+@ToString
 public class Goods implements Serializable {
 
     private static final long serialVersionUID = -3462725598723343681L;
@@ -36,6 +37,12 @@ public class Goods implements Serializable {
     public void decrOne() {
         count.getAndDecrement();
     }
+
+    public void update(int newCount) {
+        count.getAndSet(newCount);
+    }
+
+
 
 
 

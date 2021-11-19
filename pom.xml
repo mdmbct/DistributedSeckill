@@ -21,6 +21,7 @@
         <spring-boot.version>2.5.3</spring-boot.version>
         <mysql.version>8.0.26</mysql.version>
         <druid.version>1.2.6</druid.version>
+        <curator.version>5.2.0</curator.version>
 
 
         <lombok.version>1.18.20</lombok.version>
@@ -93,6 +94,11 @@
                 <groupId>redis.clients</groupId>
                 <artifactId>jedis</artifactId>
                 <version>${jedis.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.curator</groupId>
+                <artifactId>curator-recipes</artifactId>
+                <version>${curator.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.slf4j</groupId>

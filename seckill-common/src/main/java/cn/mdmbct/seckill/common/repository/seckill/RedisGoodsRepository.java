@@ -1,7 +1,7 @@
 package cn.mdmbct.seckill.common.repository.seckill;
 
 import cn.mdmbct.seckill.common.lock.HoldLockState;
-import cn.mdmbct.seckill.common.lock.Lock;
+import cn.mdmbct.seckill.common.lock.ProductLock;
 import cn.mdmbct.seckill.common.redis.JedisRedisOps;
 import cn.mdmbct.seckill.common.redis.RedisOps;
 import cn.mdmbct.seckill.common.repository.CompeteRes;
@@ -23,16 +23,16 @@ public class RedisGoodsRepository implements ProductsRepository {
 
     private final String goodsCachePrefix;
 
-    private final Lock lock;
+    private final ProductLock lock;
 
-    public RedisGoodsRepository(Pool<Jedis> jedisPool, Lock lock, Seckill seckill, String goodsCachePrefix) {
+    public RedisGoodsRepository(Pool<Jedis> jedisPool, ProductLock lock, Seckill seckill, String goodsCachePrefix) {
         this.redisOps = new JedisRedisOps(jedisPool);
         this.goodsCachePrefix = goodsCachePrefix;
         this.lock = lock;
         init(seckill);
     }
 
-    public RedisGoodsRepository(RedisOps redisOps, Lock lock, Seckill seckill, String goodsCachePrefix) {
+    public RedisGoodsRepository(RedisOps redisOps, ProductLock lock, Seckill seckill, String goodsCachePrefix) {
         this.redisOps = redisOps;
         this.goodsCachePrefix = goodsCachePrefix;
         this.lock = lock;

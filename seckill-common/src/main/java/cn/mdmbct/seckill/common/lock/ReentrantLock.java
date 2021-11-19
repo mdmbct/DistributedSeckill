@@ -1,10 +1,8 @@
 package cn.mdmbct.seckill.common.lock;
 
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 /**
  * @author mdmbct  mdmbct@outlook.com
@@ -12,7 +10,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  * @modified mdmbct
  * @since 0.1
  */
-public class ReentrantLock implements Lock {
+public class ReentrantLock implements ProductLock {
 
 
     /**
@@ -22,9 +20,16 @@ public class ReentrantLock implements Lock {
 
 //    private final Set<String>
 
-    private final int lockWaitTime;
+    private int lockWaitTime = 3;
 
-    private final TimeUnit timeUnit;
+    private TimeUnit timeUnit = TimeUnit.SECONDS;
+
+    /**
+     * 默认锁等待时间为3s
+     */
+    public ReentrantLock() {
+        this.idLocks = new ConcurrentHashMap<>();
+    }
 
     public ReentrantLock(int lockWaitTime, TimeUnit timeUnit) {
         this.idLocks = new ConcurrentHashMap<>();

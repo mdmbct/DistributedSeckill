@@ -1,7 +1,7 @@
 package cn.mdmbct.seckill.common.repository.seckill;
 
 import cn.mdmbct.seckill.common.lock.HoldLockState;
-import cn.mdmbct.seckill.common.lock.Lock;
+import cn.mdmbct.seckill.common.lock.ProductLock;
 import cn.mdmbct.seckill.common.repository.CompeteRes;
 import cn.mdmbct.seckill.common.repository.ProductsRepository;
 import lombok.Getter;
@@ -21,7 +21,7 @@ import java.util.function.Function;
 @RequiredArgsConstructor
 public class DbGoodsRepository implements ProductsRepository {
 
-    private final Lock lock;
+    private final ProductLock lock;
 
     /**
      * 数量加1 并返回新的数量

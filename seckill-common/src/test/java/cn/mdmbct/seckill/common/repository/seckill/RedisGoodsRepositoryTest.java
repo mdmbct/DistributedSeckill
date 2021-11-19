@@ -1,9 +1,8 @@
 package cn.mdmbct.seckill.common.repository.seckill;
 
-import cn.mdmbct.seckill.common.lock.ReentrantLock;
 import cn.mdmbct.seckill.common.lock.ZkDistributeLock;
 import cn.mdmbct.seckill.common.redis.JedisProperties;
-import cn.mdmbct.seckill.common.repository.CompeteRes;
+import cn.mdmbct.seckill.common.CompeteRes;
 import cn.mdmbct.seckill.common.repository.Product;
 import cn.mdmbct.seckill.common.repository.ProductsRepository;
 import org.junit.Before;

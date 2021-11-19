@@ -21,6 +21,11 @@ import java.util.concurrent.TimeUnit;
 @RequiredArgsConstructor
 public class LotteryDraw {
 
+    /**
+     * 抽奖活动id
+     */
+    private final String id;
+
     private final List<Prize> prizes;
 
     /**

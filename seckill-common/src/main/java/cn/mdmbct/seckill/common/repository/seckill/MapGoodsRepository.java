@@ -2,7 +2,7 @@ package cn.mdmbct.seckill.common.repository.seckill;
 
 import cn.mdmbct.seckill.common.lock.HoldLockState;
 import cn.mdmbct.seckill.common.lock.ProductLock;
-import cn.mdmbct.seckill.common.repository.CompeteRes;
+import cn.mdmbct.seckill.common.CompeteRes;
 import cn.mdmbct.seckill.common.repository.Product;
 import cn.mdmbct.seckill.common.repository.ProductsRepository;
 

@@ -1,5 +1,7 @@
 package cn.mdmbct.seckill.common.repository;
 
+import cn.mdmbct.seckill.common.CompeteRes;
+
 /**
  * 商品、奖品管理的库 负责实际存储它们及数量的控制
  *

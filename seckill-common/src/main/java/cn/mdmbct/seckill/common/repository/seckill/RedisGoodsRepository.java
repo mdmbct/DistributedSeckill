@@ -4,7 +4,7 @@ import cn.mdmbct.seckill.common.lock.HoldLockState;
 import cn.mdmbct.seckill.common.lock.ProductLock;
 import cn.mdmbct.seckill.common.redis.JedisRedisOps;
 import cn.mdmbct.seckill.common.redis.RedisOps;
-import cn.mdmbct.seckill.common.repository.CompeteRes;
+import cn.mdmbct.seckill.common.CompeteRes;
 import cn.mdmbct.seckill.common.repository.ProductsRepository;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.util.Pool;

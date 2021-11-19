@@ -1,8 +1,10 @@
-package cn.mdmbct.seckill.common.repository;
+package cn.mdmbct.seckill.common;
 
 import cn.mdmbct.seckill.common.lock.HoldLockState;
+import cn.mdmbct.seckill.common.filter.Rule;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 
 /**
@@ -29,8 +31,20 @@ public class CompeteRes {
      */
     private final int count;
 
+    /**
+     * 打破的规则
+     */
+    @Setter
+    private Rule ruleBroken;
+
     public CompeteRes(HoldLockState holdLockState) {
         this.holdLockState = holdLockState;
+        this.count = Integer.MIN_VALUE;
+    }
+
+    public CompeteRes(Rule ruleBroken) {
+        this.ruleBroken = ruleBroken;
+        this.holdLockState = HoldLockState.MISS;
         this.count = Integer.MIN_VALUE;
     }
 }

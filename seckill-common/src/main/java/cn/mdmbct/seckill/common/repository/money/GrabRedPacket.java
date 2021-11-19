@@ -17,6 +17,11 @@ import java.util.concurrent.TimeUnit;
 @RequiredArgsConstructor
 public class GrabRedPacket {
 
+    /**
+     * 抢红包活动id
+     */
+    private final String id;
+
     private final List<RedPacket> packets;
 
     /**

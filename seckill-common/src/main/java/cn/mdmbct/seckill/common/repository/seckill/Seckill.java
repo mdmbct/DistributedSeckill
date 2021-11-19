@@ -23,6 +23,11 @@ public class Seckill implements Serializable {
 
     private static final long serialVersionUID = 5863791314844693335L;
 
+    /**
+     * 秒杀活动id
+     */
+    private final String id;
+
     private final List<Product> goods;
 
     /**

@@ -1,5 +1,6 @@
 package cn.mdmbct.seckill.common.repository;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 import java.io.Serializable;
@@ -14,17 +15,21 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @since 0.1
  */
 @Getter
+@EqualsAndHashCode
 public class Product implements Serializable {
 
     private static final long serialVersionUID = -93160346279104104L;
 
     protected final String id;
 
-    protected final AtomicInteger count;
+    /**
+     * 剩余数量
+     */
+    protected final AtomicInteger remainCount;
 
-    public Product(String id, int count) {
+    public Product(String id, int remainCount) {
         this.id = id;
-        this.count = new AtomicInteger(count);
+        this.remainCount = new AtomicInteger(remainCount);
     }
 
     /**
@@ -32,7 +37,7 @@ public class Product implements Serializable {
      * @return 新的数量
      */
     public int incrOne() {
-        return count.incrementAndGet();
+        return remainCount.incrementAndGet();
     }
 
     /**
@@ -40,10 +45,10 @@ public class Product implements Serializable {
      * @return 新的数量
      */
     public int decrOne() {
-        return count.decrementAndGet();
+        return remainCount.decrementAndGet();
     }
 
     public void update(int newCount) {
-        count.getAndSet(newCount);
+        remainCount.getAndSet(newCount);
     }
 }

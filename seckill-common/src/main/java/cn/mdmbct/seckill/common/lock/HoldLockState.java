@@ -8,18 +8,18 @@ package cn.mdmbct.seckill.common.lock;
  * @modified mdmbct
  * @since 0.1
  */
-public enum CompeteResult {
+public enum HoldLockState {
 
 
     /**
      * 竞争到锁
      */
-    LUCKY,
+    GET,
 
     /**
      * 未竞争到锁
      */
-    UNLUCKY,
+    MISS,
 
     /**
      * 发生异常

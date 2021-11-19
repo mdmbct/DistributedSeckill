@@ -1,7 +1,6 @@
 package cn.mdmbct.seckill.common.redis;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.util.Pool;
 
@@ -50,11 +49,11 @@ public class JedisRedisOps implements RedisOps {
     }
 
     @Override
-    public void incr(String key) {
+    public Long incr(String key) {
         Jedis jedis = null;
         try {
             jedis = jedisPool.getResource();
-            jedis.incr(key);
+            return jedis.incr(key);
         } finally {
             if (jedis != null) {
                 jedis.close();
@@ -63,14 +62,15 @@ public class JedisRedisOps implements RedisOps {
     }
 
     @Override
-    public void decr(String key) {
+    public Long decr(String key) {
         Jedis jedis = null;
         try {
             jedis = jedisPool.getResource();
-            jedis.decr(key);
+            return jedis.decr(key);
         } finally {
             if (jedis != null) {
                 jedis.close();
+                System.out.println(jedis.get("szt_rail_transit_hash_last"));
             }
         }
     }

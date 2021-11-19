@@ -30,12 +30,20 @@ public class Goods implements Serializable {
 
     private final AtomicInteger count;
 
-    public void incrOne() {
-        count.getAndIncrement();
+    /**
+     * 增加1并返回新值
+     * @return 新的数量
+     */
+    public int incrOne() {
+        return count.incrementAndGet();
     }
 
-    public void decrOne() {
-        count.getAndDecrement();
+    /**
+     * 减少1并返回新值
+     * @return 新的数量
+     */
+    public int decrOne() {
+        return count.decrementAndGet();
     }
 
     public void update(int newCount) {

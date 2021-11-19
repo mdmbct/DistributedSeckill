@@ -1,26 +1,19 @@
 package cn.mdmbct.seckill.common.repository.seckill;
 
 import cn.mdmbct.seckill.common.lock.CompeteResult;
-import cn.mdmbct.seckill.common.lock.RedissonDistributeLock;
+import cn.mdmbct.seckill.common.lock.ReentrantLock;
 import cn.mdmbct.seckill.common.redis.JedisProperties;
-import cn.mdmbct.seckill.common.redis.RedissonConfigFactory;
-import cn.mdmbct.seckill.common.redis.RedissonProperties;
 import org.junit.Before;
 import org.junit.Test;
-import org.redisson.Redisson;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import redis.clients.jedis.JedisPool;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
-
-import static org.junit.Assert.*;
 
 public class RedisGoodsRepositoryTest {
 
@@ -37,12 +30,13 @@ public class RedisGoodsRepositoryTest {
         final JedisPool jedisPool = JedisProperties.getJedisPool(jedisProperties);
 
 
-        final RedissonDistributeLock lock = new RedissonDistributeLock(Redisson.create(RedissonConfigFactory.createRedissonConfig(new RedissonProperties())),
-                3,
-                20,
-                TimeUnit.SECONDS,
-                "seckill:test_lock_"
-        );
+//        final RedissonDistributeLock lock = new RedissonDistributeLock(Redisson.create(RedissonConfigFactory.createRedissonConfig(new RedissonProperties())),
+//                3,
+//                20,
+//                TimeUnit.SECONDS,
+//                "seckill:test_lock_"
+//        );
+        final ReentrantLock lock = new ReentrantLock(3, TimeUnit.SECONDS);
 
 
         final Seckill seckill = new Seckill(

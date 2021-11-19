@@ -13,9 +13,10 @@ import java.util.concurrent.TimeUnit;
 public interface Lock {
 
     /**
+     * 尝试加锁
      *
      * @param id 商品、奖品的id
-     * @return
+     * @return 是否加锁成功
      */
     boolean tryLock(String id);
 

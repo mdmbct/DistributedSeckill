@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
- * 抽奖
+ * 抽奖配置
  *
  * @author mdmbct  mdmbct@outlook.com
  * @date 2021/11/19 20:03

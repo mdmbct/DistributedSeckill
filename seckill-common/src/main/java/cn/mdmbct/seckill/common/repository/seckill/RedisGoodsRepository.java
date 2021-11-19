@@ -45,7 +45,7 @@ public class RedisGoodsRepository implements ProductsRepository {
         // 商品转Redis
         seckill.getGoods().forEach(goods1 -> redisOps.set(
                 goodsCacheKey(goods1.getId()),
-                goods1.getCount().toString(),
+                goods1.getRemainCount().toString(),
                 seckill.getDuration(),
                 seckill.getTimeUnit())
         );

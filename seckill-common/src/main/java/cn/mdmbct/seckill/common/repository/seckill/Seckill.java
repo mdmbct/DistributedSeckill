@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
- * 秒杀
+ * 秒杀配置
  *
  * @author mdmbct  mdmbct@outlook.com
  * @date 2021/11/18 20:33

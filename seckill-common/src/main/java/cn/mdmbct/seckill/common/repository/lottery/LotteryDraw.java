@@ -1,32 +1,30 @@
-package cn.mdmbct.seckill.common.repository.seckill;
+package cn.mdmbct.seckill.common.repository.lottery;
 
 import cn.mdmbct.seckill.common.repository.Product;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-import java.io.Serializable;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
- * 秒杀
+ * 抽奖
  *
  * @author mdmbct  mdmbct@outlook.com
- * @date 2021/11/18 20:33
+ * @date 2021/11/19 20:03
  * @modified mdmbct
  * @since 0.1
  */
 @Getter
+@EqualsAndHashCode
 @RequiredArgsConstructor
-public class Seckill implements Serializable {
+public class LotteryDraw {
 
-    private static final long serialVersionUID = 5863791314844693335L;
-
-    private final List<Product> goods;
+    private final List<Prize> prizes;
 
     /**
-     * 秒杀持续时间
+     * 持续时间
      */
     private final long duration;
 
@@ -39,6 +37,4 @@ public class Seckill implements Serializable {
      * 开始时间
      */
     private final long startTime;
-
-
 }

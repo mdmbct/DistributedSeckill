@@ -4,6 +4,7 @@ import cn.mdmbct.seckill.common.lock.HoldLockState;
 import cn.mdmbct.seckill.common.lock.Lock;
 import cn.mdmbct.seckill.common.repository.CompeteRes;
 import cn.mdmbct.seckill.common.repository.ProductsRepository;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import java.util.function.Consumer;
@@ -22,14 +23,21 @@ public class DbGoodsRepository implements ProductsRepository {
 
     private final Lock lock;
 
+    /**
+     * 数量加1 并返回新的数量
+     * 输入: 产品id
+     * 输出: 产品新的数量
+     */
     private final Function<String, Integer> dbDecrOneOp;
 
+    /**
+     * 数量减1 并返回新的数量
+     * 输入: 产品id
+     * 输出: 产品新的数量
+     */
     private final Function<String, Integer> dbIncrOneOp;
 
-    /**
-     * 数组第一个参数为商品id 第二个参数为商品数量
-     */
-    private final Consumer<Object[]> dbUpdateOp;
+    private final Consumer<CountUpdateParams> dbUpdateOp;
 
     @Override
     public CompeteRes incrOne(String id) {
@@ -67,8 +75,7 @@ public class DbGoodsRepository implements ProductsRepository {
     public CompeteRes updateCount(String id, int newCount) {
         if (lock.tryLock(id)) {
             try {
-                // 操作数据库
-                dbUpdateOp.accept(new Object[]{id, newCount});
+                dbUpdateOp.accept(new CountUpdateParams(id, newCount));
                 return new CompeteRes(HoldLockState.GET, newCount);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -78,5 +85,20 @@ public class DbGoodsRepository implements ProductsRepository {
             }
         }
         return new CompeteRes(HoldLockState.MISS);
+    }
+
+    @Getter
+    @RequiredArgsConstructor
+    public static class CountUpdateParams {
+
+        /**
+         * 产品id
+         */
+        private final String id;
+
+        /**
+         * 新的数量
+         */
+        private final int newCount;
     }
 }

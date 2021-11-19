@@ -3,13 +3,16 @@ package cn.mdmbct.seckill.common.repository.seckill;
 import cn.mdmbct.seckill.common.lock.CompeteResult;
 import cn.mdmbct.seckill.common.lock.ReentrantLock;
 import cn.mdmbct.seckill.common.redis.JedisProperties;
+import cn.mdmbct.seckill.common.repository.ProductsRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import redis.clients.jedis.JedisPool;
 
+import java.lang.reflect.Field;
 import java.util.Arrays;
+import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -19,7 +22,7 @@ public class RedisGoodsRepositoryTest {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(RedisGoodsRepositoryTest.class);
 
-    private RedisGoodsRepository repository;
+    private ProductsRepository repository;
 
     @Before
     public void setUp() throws Exception {
@@ -58,12 +61,13 @@ public class RedisGoodsRepositoryTest {
         );
 
 
-        this.repository = new RedisGoodsRepository(
-                jedisPool,
-                lock,
-                seckill,
-                "seckill:test_goods_"
-        );
+//        this.repository = new RedisGoodsRepository(
+//                jedisPool,
+//                lock,
+//                seckill,
+//                "seckill:test_goods_"
+//        );
+        this.repository = new LocalGoodsRepository(lock, seckill);
     }
 
     @Test
@@ -72,7 +76,7 @@ public class RedisGoodsRepositoryTest {
     }
 
     @Test
-    public void decrOne() {
+    public void decrOne() throws NoSuchFieldException, IllegalAccessException {
 
         int corePoolSize = Runtime.getRuntime().availableProcessors();
         final ThreadPoolExecutor executor = new ThreadPoolExecutor(corePoolSize, corePoolSize + 1, 10l, TimeUnit.SECONDS,
@@ -97,10 +101,12 @@ public class RedisGoodsRepositoryTest {
             e.printStackTrace();
         }
 
+        getLocalRepositoryGoods((LocalGoodsRepository) repository);
+
     }
 
     @Test
-    public void testDecrOneTimes() throws InterruptedException {
+    public void testDecrOneTimes() throws InterruptedException, NoSuchFieldException, IllegalAccessException {
 
         int corePoolSize = Runtime.getRuntime().availableProcessors();
 
@@ -130,9 +136,21 @@ public class RedisGoodsRepositoryTest {
             System.out.println("--------------------------");
             Thread.sleep(1000);
         }
+
+        getLocalRepositoryGoods((LocalGoodsRepository) repository);
     }
 
     @Test
     public void updateCount() {
+    }
+
+    private void getLocalRepositoryGoods(LocalGoodsRepository localGoodsRepository) throws NoSuchFieldException, IllegalAccessException {
+
+        final Field goodsCache = localGoodsRepository.getClass().getDeclaredField("goodsCache");
+        goodsCache.setAccessible(true);
+        final Map<String, Goods> map = (Map<String, Goods>) goodsCache.get(localGoodsRepository);
+        map.forEach((k, v) -> {
+            System.out.println(v);
+        });
     }
 }

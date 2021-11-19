@@ -63,11 +63,11 @@ public class DbGoodsRepository implements ProductsRepository {
     }
 
     @Override
-    public CompeteResult updateCount(String id, int count) {
+    public CompeteResult updateCount(String id, int newCount) {
         if (lock.tryLock(id)) {
             try {
                 // 操作数据库
-                dbUpdateOp.accept(new Object[]{id, count});
+                dbUpdateOp.accept(new Object[]{id, newCount});
             } catch (Exception e) {
                 e.printStackTrace();
                 return CompeteResult.EXCEPTION;

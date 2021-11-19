@@ -10,7 +10,7 @@ import java.util.concurrent.TimeUnit;
  * @modified mdmbct
  * @since 0.1
  */
-public interface Lock {
+public interface ProductLock {
 
     /**
      * 尝试加锁

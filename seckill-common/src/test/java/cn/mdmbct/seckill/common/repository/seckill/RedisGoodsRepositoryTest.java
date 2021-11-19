@@ -1,6 +1,7 @@
 package cn.mdmbct.seckill.common.repository.seckill;
 
 import cn.mdmbct.seckill.common.lock.ReentrantLock;
+import cn.mdmbct.seckill.common.lock.ZkDistributeLock;
 import cn.mdmbct.seckill.common.redis.JedisProperties;
 import cn.mdmbct.seckill.common.repository.CompeteRes;
 import cn.mdmbct.seckill.common.repository.Product;
@@ -40,8 +41,9 @@ public class RedisGoodsRepositoryTest {
 //                TimeUnit.SECONDS,
 //                "seckill:test_lock_"
 //        );
-        final ReentrantLock lock = new ReentrantLock(3, TimeUnit.SECONDS);
+//        final ReentrantLock lock = new ReentrantLock(3, TimeUnit.SECONDS);
 
+        final ZkDistributeLock lock = new ZkDistributeLock("/curator/lock/seckill", Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8", "9", "10"));
 
         final Seckill seckill = new Seckill(
                 Arrays.asList(

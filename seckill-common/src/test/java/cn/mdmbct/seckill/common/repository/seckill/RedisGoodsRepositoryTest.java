@@ -1,9 +1,9 @@
 package cn.mdmbct.seckill.common.repository.seckill;
 
-import cn.mdmbct.seckill.common.lock.HoldLockState;
 import cn.mdmbct.seckill.common.lock.ReentrantLock;
 import cn.mdmbct.seckill.common.redis.JedisProperties;
 import cn.mdmbct.seckill.common.repository.CompeteRes;
+import cn.mdmbct.seckill.common.repository.Product;
 import cn.mdmbct.seckill.common.repository.ProductsRepository;
 import org.junit.Before;
 import org.junit.Test;
@@ -45,16 +45,16 @@ public class RedisGoodsRepositoryTest {
 
         final Seckill seckill = new Seckill(
                 Arrays.asList(
-                        new Goods("1", 1001),
-                        new Goods("2", 1001),
-                        new Goods("3", 1001),
-                        new Goods("4", 1001),
-                        new Goods("5", 1001),
-                        new Goods("6", 1001),
-                        new Goods("7", 1001),
-                        new Goods("8", 1001),
-                        new Goods("9", 1001),
-                        new Goods("10", 100)
+                        new Product("1", 1001),
+                        new Product("2", 1001),
+                        new Product("3", 1001),
+                        new Product("4", 1001),
+                        new Product("5", 1001),
+                        new Product("6", 1001),
+                        new Product("7", 1001),
+                        new Product("8", 1001),
+                        new Product("9", 1001),
+                        new Product("10", 100)
                 ),
                 1,
                 TimeUnit.MINUTES,
@@ -66,9 +66,9 @@ public class RedisGoodsRepositoryTest {
                 jedisPool,
                 lock,
                 seckill,
-                "seckill:test_goods_"
+                "seckill:test_Product_"
         );
-//        this.repository = new LocalGoodsRepository(lock, seckill);
+//        this.repository = new LocalProductRepository(lock, seckill);
     }
 
     @Test
@@ -102,7 +102,7 @@ public class RedisGoodsRepositoryTest {
             e.printStackTrace();
         }
 
-//        getLocalRepositoryGoods((LocalGoodsRepository) repository);
+//        getLocalRepositoryProduct((LocalProductRepository) repository);
 
     }
 
@@ -138,18 +138,18 @@ public class RedisGoodsRepositoryTest {
             Thread.sleep(1000);
         }
 
-//        getLocalRepositoryGoods((LocalGoodsRepository) repository);
+//        getLocalRepositoryProduct((LocalProductRepository) repository);
     }
 
     @Test
     public void updateCount() {
     }
 
-    private void getLocalRepositoryGoods(LocalGoodsRepository localGoodsRepository) throws NoSuchFieldException, IllegalAccessException {
+    private void getLocalRepositoryProduct(MapGoodsRepository localProductRepository) throws NoSuchFieldException, IllegalAccessException {
 
-        final Field goodsCache = localGoodsRepository.getClass().getDeclaredField("goodsCache");
-        goodsCache.setAccessible(true);
-        final Map<String, Goods> map = (Map<String, Goods>) goodsCache.get(localGoodsRepository);
+        final Field ProductCache = localProductRepository.getClass().getDeclaredField("ProductCache");
+        ProductCache.setAccessible(true);
+        final Map<String, Product> map = (Map<String, Product>) ProductCache.get(localProductRepository);
         map.forEach((k, v) -> {
             System.out.println(v);
         });

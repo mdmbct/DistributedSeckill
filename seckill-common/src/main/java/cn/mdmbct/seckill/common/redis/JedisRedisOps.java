@@ -1,7 +1,6 @@
 package cn.mdmbct.seckill.common.redis;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.util.Pool;
 
@@ -21,57 +20,34 @@ public class JedisRedisOps implements RedisOps {
 
     @Override
     public void set(String key, String value, long expire, TimeUnit timeUnit) {
-        Jedis jedis = null;
-        try {
-            jedis = jedisPool.getResource();
+        //  try-with-resources statement => try中的资源自动关闭
+        try (Jedis jedis = jedisPool.getResource()) {
             if (expire <= 0) {
                 set(key, value);
             } else {
                 jedis.psetex(key, timeUnit.toMillis(expire), value);
-            }
-        } finally {
-            if (jedis != null) {
-                jedis.close();
             }
         }
     }
 
     @Override
     public void set(String key, String value) {
-        Jedis jedis = null;
-        try {
-            jedis = jedisPool.getResource();
+        try (Jedis jedis = jedisPool.getResource()) {
             jedis.set(key, value);
-        } finally {
-            if (jedis != null) {
-                jedis.close();
-            }
         }
     }
 
     @Override
-    public void incr(String key) {
-        Jedis jedis = null;
-        try {
-            jedis = jedisPool.getResource();
-            jedis.incr(key);
-        } finally {
-            if (jedis != null) {
-                jedis.close();
-            }
+    public Long incr(String key) {
+        try (Jedis jedis = jedisPool.getResource()) {
+            return jedis.incr(key);
         }
     }
 
     @Override
-    public void decr(String key) {
-        Jedis jedis = null;
-        try {
-            jedis = jedisPool.getResource();
-            jedis.decr(key);
-        } finally {
-            if (jedis != null) {
-                jedis.close();
-            }
+    public Long decr(String key) {
+        try (Jedis jedis = jedisPool.getResource()) {
+            return jedis.decr(key);
         }
     }
 

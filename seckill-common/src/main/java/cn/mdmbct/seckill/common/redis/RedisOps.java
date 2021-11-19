@@ -17,7 +17,7 @@ public interface RedisOps {
 
     void set(String key, String value);
 
-    void incr(String key);
+    Long incr(String key);
 
-    void decr(String key);
+    Long decr(String key);
 }

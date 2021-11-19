@@ -1,8 +1,9 @@
 package cn.mdmbct.seckill.common.repository.seckill;
 
-import cn.mdmbct.seckill.common.lock.CompeteResult;
+import cn.mdmbct.seckill.common.lock.HoldLockState;
 import cn.mdmbct.seckill.common.lock.ReentrantLock;
 import cn.mdmbct.seckill.common.redis.JedisProperties;
+import cn.mdmbct.seckill.common.repository.CompeteRes;
 import cn.mdmbct.seckill.common.repository.ProductsRepository;
 import org.junit.Before;
 import org.junit.Test;
@@ -53,7 +54,7 @@ public class RedisGoodsRepositoryTest {
                         new Goods("7", 1001),
                         new Goods("8", 1001),
                         new Goods("9", 1001),
-                        new Goods("10", 1001)
+                        new Goods("10", 100)
                 ),
                 1,
                 TimeUnit.MINUTES,
@@ -61,13 +62,13 @@ public class RedisGoodsRepositoryTest {
         );
 
 
-//        this.repository = new RedisGoodsRepository(
-//                jedisPool,
-//                lock,
-//                seckill,
-//                "seckill:test_goods_"
-//        );
-        this.repository = new LocalGoodsRepository(lock, seckill);
+        this.repository = new RedisGoodsRepository(
+                jedisPool,
+                lock,
+                seckill,
+                "seckill:test_goods_"
+        );
+//        this.repository = new LocalGoodsRepository(lock, seckill);
     }
 
     @Test
@@ -88,7 +89,7 @@ public class RedisGoodsRepositoryTest {
         for (int i = 0; i < killNum; i++) {
             long userId = i;
             final Runnable task = () -> {
-                final CompeteResult competeResult = repository.decrOne("1");
+                final CompeteRes competeResult = repository.decrOne("1");
 //                LOGGER.info("用户id: " + userId + competeResult);
                 System.out.println("用户id: " + userId + competeResult);
                 latch.countDown();
@@ -101,7 +102,7 @@ public class RedisGoodsRepositoryTest {
             e.printStackTrace();
         }
 
-        getLocalRepositoryGoods((LocalGoodsRepository) repository);
+//        getLocalRepositoryGoods((LocalGoodsRepository) repository);
 
     }
 
@@ -120,7 +121,7 @@ public class RedisGoodsRepositoryTest {
                 long userId = i;
                 int finalJ = j;
                 final Runnable task = () -> {
-                    final CompeteResult competeResult = repository.decrOne(String.valueOf(finalJ));
+                    final CompeteRes competeResult = repository.decrOne(String.valueOf(finalJ));
 //                LOGGER.info("用户id: " + userId + competeResult);
                     System.out.println("用户id: " + userId + competeResult);
                     latch.countDown();
@@ -137,7 +138,7 @@ public class RedisGoodsRepositoryTest {
             Thread.sleep(1000);
         }
 
-        getLocalRepositoryGoods((LocalGoodsRepository) repository);
+//        getLocalRepositoryGoods((LocalGoodsRepository) repository);
     }
 
     @Test

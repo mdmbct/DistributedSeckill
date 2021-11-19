@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit;
  * @author mdmbct  mdmbct@outlook.com
  * @date 2021/11/18 19:30
  * @modified mdmbct
- * @since 1.0
+ * @since 0.1
  */
 public class RedissonDistributeLock implements Lock {
 

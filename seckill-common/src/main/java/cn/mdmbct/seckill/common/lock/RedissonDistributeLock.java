@@ -1,10 +1,8 @@
 package cn.mdmbct.seckill.common.lock;
 
-import lombok.RequiredArgsConstructor;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 
-import java.nio.file.Watchable;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -13,19 +11,32 @@ import java.util.concurrent.TimeUnit;
  * @author mdmbct  mdmbct@outlook.com
  * @date 2021/11/18 19:30
  * @modified mdmbct
- * @since 1.0
+ * @since 0.1
  */
-public class RedissonDistributeLock implements Lock {
+public class RedissonDistributeLock implements ProductLock {
 
     private final RedissonClient redissonClient;
 
-    private final int lockWaitTime;
+    private int lockWaitTime = 3;
 
-    private final int lockExpireTime;
+    private int lockExpireTime = 10;
 
-    private final TimeUnit timeUnit;
+    private TimeUnit timeUnit = TimeUnit.SECONDS;
 
     private final String lockCachePrefix;
+
+    /**
+     * 默认锁等待时间为3s 过期时间为10s
+     * @param redissonClient  redisson客户端
+     * @param lockCachePrefix 锁前缀
+     */
+    public RedissonDistributeLock(RedissonClient redissonClient, String lockCachePrefix) {
+        if (lockCachePrefix == null || lockCachePrefix.length() == 0) {
+            throw new IllegalArgumentException("参数‘lockCachePrefix’不能为空");
+        }
+        this.redissonClient = redissonClient;
+        this.lockCachePrefix = lockCachePrefix;
+    }
 
     public RedissonDistributeLock(RedissonClient redissonClient,
                                   int lockWaitTime,

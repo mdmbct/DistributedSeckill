@@ -3,48 +3,48 @@ package cn.mdmbct.seckill.common.repository.seckill;
 import cn.mdmbct.seckill.common.lock.HoldLockState;
 import cn.mdmbct.seckill.common.lock.ProductLock;
 import cn.mdmbct.seckill.common.repository.CompeteRes;
+import cn.mdmbct.seckill.common.repository.Product;
 import cn.mdmbct.seckill.common.repository.ProductsRepository;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
-import java.util.function.Consumer;
-import java.util.function.Function;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
- * 对商品数量修改在数据库中进行
- *
  * @author mdmbct  mdmbct@outlook.com
- * @date 2021/11/18 21:35
+ * @date 2021/11/18 21:46
  * @modified mdmbct
  * @since 0.1
  */
-@RequiredArgsConstructor
-public class DbGoodsRepository implements ProductsRepository {
+public class MapGoodsRepository implements ProductsRepository {
+
+    private final Map<String, Product> goodsCache;
 
     private final ProductLock lock;
 
-    /**
-     * 数量加1 并返回新的数量
-     * 输入: 产品id
-     * 输出: 产品新的数量
-     */
-    private final Function<String, Integer> dbDecrOneOp;
+    // 加不加读写锁效果没什么区别 按理来说是不需要读写锁的 因为某线程更新商品信息前必须拥有该商品的锁
+//    private final ReentrantReadWriteLock readWriteLock;
 
-    /**
-     * 数量减1 并返回新的数量
-     * 输入: 产品id
-     * 输出: 产品新的数量
-     */
-    private final Function<String, Integer> dbIncrOneOp;
+    public MapGoodsRepository(ProductLock lock, Seckill seckill) {
+        this.lock = lock;
+//        this.readWriteLock = new ReentrantReadWriteLock(true);
+        this.goodsCache = new HashMap<>(seckill.getGoods().size());
+        seckill.getGoods().forEach(goods -> goodsCache.put(goods.getId(), goods));
+    }
 
-    private final Consumer<CountUpdateParams> dbUpdateOp;
+//    private Goods get(String id) {
+//        readWriteLock.readLock().lock();
+//        try {
+//            return goodsCache.get(id);
+//        } finally {
+//            readWriteLock.readLock().unlock();
+//        }
+//    }
 
     @Override
     public CompeteRes incrOne(String id) {
         if (lock.tryLock(id)) {
             try {
-                // 操作数据库
-                return new CompeteRes(HoldLockState.GET, dbIncrOneOp.apply(id));
+                return new CompeteRes(HoldLockState.GET, goodsCache.get(id).incrOne());
             } catch (Exception e) {
                 e.printStackTrace();
                 return new CompeteRes(HoldLockState.EXCEPTION);
@@ -60,7 +60,14 @@ public class DbGoodsRepository implements ProductsRepository {
 
         if (lock.tryLock(id)) {
             try {
-                return new CompeteRes(HoldLockState.GET, dbDecrOneOp.apply(id));
+                return new CompeteRes(HoldLockState.GET, goodsCache.get(id).decrOne());
+//                final Goods goods = get(id);
+//                readWriteLock.writeLock().lock();
+//                try {
+//                    goods.decrOne();
+//                } finally {
+//                    readWriteLock.writeLock().unlock();
+//                }
             } catch (Exception e) {
                 e.printStackTrace();
                 return new CompeteRes(HoldLockState.EXCEPTION);
@@ -75,7 +82,7 @@ public class DbGoodsRepository implements ProductsRepository {
     public CompeteRes updateCount(String id, int newCount) {
         if (lock.tryLock(id)) {
             try {
-                dbUpdateOp.accept(new CountUpdateParams(id, newCount));
+                goodsCache.get(id).update(newCount);
                 return new CompeteRes(HoldLockState.GET, newCount);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -85,20 +92,5 @@ public class DbGoodsRepository implements ProductsRepository {
             }
         }
         return new CompeteRes(HoldLockState.MISS);
-    }
-
-    @Getter
-    @RequiredArgsConstructor
-    public static class CountUpdateParams {
-
-        /**
-         * 产品id
-         */
-        private final String id;
-
-        /**
-         * 新的数量
-         */
-        private final int newCount;
     }
 }

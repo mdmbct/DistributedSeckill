@@ -6,20 +6,20 @@ package cn.mdmbct.seckill.common.lock;
  * @author mdmbct  mdmbct@outlook.com
  * @date 2021/11/18 21:18
  * @modified mdmbct
- * @since 1.0
+ * @since 0.1
  */
-public enum CompeteResult {
+public enum HoldLockState {
 
 
     /**
      * 竞争到锁
      */
-    LUCKY,
+    GET,
 
     /**
      * 未竞争到锁
      */
-    UNLUCKY,
+    MISS,
 
     /**
      * 发生异常

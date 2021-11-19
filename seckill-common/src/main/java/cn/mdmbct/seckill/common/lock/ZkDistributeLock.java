@@ -33,7 +33,7 @@ public class ZkDistributeLock implements ProductLock {
 
     private CuratorFramework client;
 
-    private final String lockNode;
+    private final String lockPath;
 
     private final Map<String, InterProcessMutex> mutexMap;
 
@@ -45,22 +45,22 @@ public class ZkDistributeLock implements ProductLock {
      * lockWaitTime = 3s <br>
      * address = "localhost:2181"
      *
-     * @param lockNode zk分布式锁节点，比如：“/curator/lock/seckill“，注意节点最后不能有”/“
+     * @param lockPath zk分布式锁节点目录，比如：“/curator/lock/seckill“，注意节点最后不能有”/“
      */
-    public ZkDistributeLock(String lockNode, List<String> productIds) {
-        this.lockNode = lockNode;
+    public ZkDistributeLock(String lockPath, List<String> productIds) {
+        this.lockPath = lockPath;
         this.mutexMap = new HashMap<>(productIds.size());
         init(productIds);
     }
 
-    public ZkDistributeLock(String lockNode,
+    public ZkDistributeLock(String lockPath,
                             int baseSleepTimeMs,
                             int maxRetries,
                             String address,
                             long lockWaitTime,
                             TimeUnit lockWaitTimeTimeUnit,
                             List<String> productIds) {
-        this.lockNode = lockNode;
+        this.lockPath = lockPath;
         this.baseSleepTimeMs = baseSleepTimeMs;
         this.maxRetries = maxRetries;
         this.address = address;
@@ -74,9 +74,7 @@ public class ZkDistributeLock implements ProductLock {
         RetryPolicy retryPolicy = new ExponentialBackoffRetry(baseSleepTimeMs, maxRetries);
         client = CuratorFrameworkFactory.newClient(address, retryPolicy);
         client.start();
-        productIds.forEach(productId -> {
-            mutexMap.put(productId, new InterProcessMutex(client, lockNode + "/" + productId));
-        });
+        productIds.forEach(productId -> mutexMap.put(productId, new InterProcessMutex(client, lockPath + "/" + productId)));
     }
 
 

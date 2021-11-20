@@ -33,12 +33,6 @@ public interface Filter extends Comparable<Filter> {
     CompeteRes doFilter(Participant participant);
 
     /**
-     * 获取该过滤器处理的限制规则
-     * @return 该过滤器处理的限制规则
-     */
-    Rule getRule();
-
-    /**
      * 清理工作
      */
     void clear();

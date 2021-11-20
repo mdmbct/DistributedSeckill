@@ -15,19 +15,12 @@ public abstract class BaseFilter implements Filter {
 
     protected Filter nextFilter;
 
-    protected final Rule rule;
+    protected final int order;
 
     @Override
     public int getOrder() {
-        return getRule().getOrder();
+        return order;
     }
-
-    @Override
-    public Rule getRule() {
-        return rule;
-    }
-
-
 
     @Override
     public void nextFilter(Filter filter) {

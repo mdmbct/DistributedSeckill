@@ -14,7 +14,7 @@ public class ReentrantLock implements ProductLock {
 
 
     /**
-     * 每个商品一个公平锁，提高并发度
+     * 每个商品一个公平锁，提高并发度 key:商品id
      */
     private final Map<String, java.util.concurrent.locks.ReentrantLock> idLocks;
 

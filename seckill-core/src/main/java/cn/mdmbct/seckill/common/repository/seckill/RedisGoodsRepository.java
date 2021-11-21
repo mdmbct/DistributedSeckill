@@ -10,7 +10,7 @@ import redis.clients.jedis.Jedis;
 import redis.clients.jedis.util.Pool;
 
 /**
- * 对商品数量的修改直接在Redis中进行
+ * 对商品数量的修改直接在Redis中进行 适用于分布式下使用
  *
  * @author mdmbct  mdmbct@outlook.com
  * @date 2021/11/18 19:56

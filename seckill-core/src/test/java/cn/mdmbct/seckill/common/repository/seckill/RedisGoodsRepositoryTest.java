@@ -146,7 +146,7 @@ public class RedisGoodsRepositoryTest {
     public void updateCount() {
     }
 
-    private void getLocalRepositoryProduct(MapGoodsRepository localProductRepository) throws NoSuchFieldException, IllegalAccessException {
+    private void getLocalRepositoryProduct(SingleGoodsRepository localProductRepository) throws NoSuchFieldException, IllegalAccessException {
 
         final Field ProductCache = localProductRepository.getClass().getDeclaredField("ProductCache");
         ProductCache.setAccessible(true);

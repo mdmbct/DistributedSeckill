@@ -41,11 +41,6 @@ public class StockStateFilter extends BaseFilter {
 
     }
 
-    @Override
-    public void clear() {
-
-    }
-
     public void updateStockState(boolean haveStock) {
         stateLock.writeLock().lock();
         this.haveStock = haveStock;

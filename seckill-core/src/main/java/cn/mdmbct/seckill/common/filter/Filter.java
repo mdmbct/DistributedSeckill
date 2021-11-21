@@ -37,9 +37,11 @@ public interface Filter extends Comparable<Filter> {
     void doFilter(Participant participant, FilterRes res);
 
     /**
-     * 清理工作
+     * 清理工作 如果需要做清理工作必须重写此方法
      */
-    void clear();
+    default void clear() {
+
+    }
 
     @Override
     default int compareTo(Filter o) {

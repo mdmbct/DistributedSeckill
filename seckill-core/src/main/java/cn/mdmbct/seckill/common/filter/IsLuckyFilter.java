@@ -21,11 +21,6 @@ public class IsLuckyFilter extends BaseFilter {
     }
 
     @Override
-    public void clear() {
-
-    }
-
-    @Override
     public String notPassMsg() {
         return "未中奖！";
     }

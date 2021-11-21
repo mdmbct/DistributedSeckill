@@ -10,12 +10,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * 使用map存储产品 适用于单体下使用
+ *
  * @author mdmbct  mdmbct@outlook.com
  * @date 2021/11/18 21:46
  * @modified mdmbct
  * @since 0.1
  */
-public class MapGoodsRepository implements ProductsRepository {
+public class SingleGoodsRepository implements ProductsRepository {
 
     private final Map<String, Product> goodsCache;
 
@@ -24,7 +26,7 @@ public class MapGoodsRepository implements ProductsRepository {
     // 加不加读写锁效果没什么区别 按理来说是不需要读写锁的 因为某线程更新商品信息前必须拥有该商品的锁
 //    private final ReentrantReadWriteLock readWriteLock;
 
-    public MapGoodsRepository(ProductLock lock, Seckill seckill) {
+    public SingleGoodsRepository(ProductLock lock, Seckill seckill) {
         this.lock = lock;
 //        this.readWriteLock = new ReentrantReadWriteLock(true);
         this.goodsCache = new HashMap<>(seckill.getGoods().size());

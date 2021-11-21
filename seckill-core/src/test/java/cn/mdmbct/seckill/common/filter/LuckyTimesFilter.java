@@ -23,11 +23,6 @@ public class LuckyTimesFilter extends BaseFilter {
     }
 
     @Override
-    public void clear() {
-
-    }
-
-    @Override
     public String notPassMsg() {
         return null;
     }

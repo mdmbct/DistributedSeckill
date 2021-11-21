@@ -19,7 +19,7 @@
     <dependencies>
         <dependency>
             <groupId>cn.mdmbct</groupId>
-            <artifactId>seckill-common</artifactId>
+            <artifactId>seckill-core</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>

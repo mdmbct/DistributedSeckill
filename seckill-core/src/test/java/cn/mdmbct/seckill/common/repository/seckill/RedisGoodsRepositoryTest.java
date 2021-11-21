@@ -44,7 +44,7 @@ public class RedisGoodsRepositoryTest {
 
         final ZkDistributeLock lock = new ZkDistributeLock("/curator/lock/seckill", Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8", "9", "10"));
 
-        final Seckill seckill = new Seckill(
+        final Seckill seckill = new Seckill("1",
                 Arrays.asList(
                         new Product("1", 1001),
                         new Product("2", 1001),

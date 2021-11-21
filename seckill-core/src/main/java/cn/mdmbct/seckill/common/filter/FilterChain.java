@@ -2,6 +2,7 @@ package cn.mdmbct.seckill.common.filter;
 
 import cn.mdmbct.seckill.common.CompeteRes;
 import cn.mdmbct.seckill.common.Participant;
+import cn.mdmbct.seckill.common.lock.HoldLockState;
 
 import java.util.Collections;
 import java.util.List;
@@ -24,10 +25,12 @@ public class FilterChain {
     }
 
     public CompeteRes doFilter(Participant participant) {
+        CompeteRes res = new CompeteRes(HoldLockState.MISS, Integer.MIN_VALUE);
         if (filters.size() != 0) {
-            return filters.get(0).doFilter(participant);
+            // 执行过滤器逻辑 并更新CompeteRes
+            filters.get(0).doFilter(participant, res);
         }
-        return null;
+        return res;
     }
 
 

@@ -4,17 +4,15 @@ import cn.mdmbct.seckill.common.CompeteRes;
 import cn.mdmbct.seckill.common.Participant;
 
 /**
- * 中奖次数过滤器
+ * 是否中奖过滤器 将是否中奖前置到竞争锁之前 提高效率
  *
  * @author mdmbct  mdmbct@outlook.com
- * @date 2021/11/20 0:17
+ * @date 2021/11/21 9:02
  * @modified mdmbct
  * @since 0.1
  */
-public class LuckyTimesFilter extends BaseFilter {
-
-
-    public LuckyTimesFilter(int order) {
+public class IsLuckyFilter extends BaseFilter {
+    public IsLuckyFilter(int order) {
         super(order);
     }
 
@@ -23,7 +21,6 @@ public class LuckyTimesFilter extends BaseFilter {
 
     }
 
-
     @Override
     public void clear() {
 
@@ -31,6 +28,6 @@ public class LuckyTimesFilter extends BaseFilter {
 
     @Override
     public String notPassMsg() {
-        return null;
+        return "未中奖！";
     }
 }

@@ -4,25 +4,27 @@ import cn.mdmbct.seckill.common.CompeteRes;
 import cn.mdmbct.seckill.common.Participant;
 
 /**
- * 中奖次数过滤器
+ * 限流过滤器
  *
  * @author mdmbct  mdmbct@outlook.com
- * @date 2021/11/20 0:17
+ * @date 2021/11/21 8:57
  * @modified mdmbct
  * @since 0.1
  */
-public class LuckyTimesFilter extends BaseFilter {
+public class CurrentLimitingFilter extends BaseFilter {
 
-
-    public LuckyTimesFilter(int order) {
+    public CurrentLimitingFilter(int order) {
         super(order);
+    }
+
+    public CurrentLimitingFilter() {
+        super(FIRST_FILTER_ORDER);
     }
 
     @Override
     public void doFilter(Participant participant, CompeteRes competeRes) {
 
     }
-
 
     @Override
     public void clear() {
@@ -31,6 +33,6 @@ public class LuckyTimesFilter extends BaseFilter {
 
     @Override
     public String notPassMsg() {
-        return null;
+        return "当前人数过多，请稍后重试";
     }
 }

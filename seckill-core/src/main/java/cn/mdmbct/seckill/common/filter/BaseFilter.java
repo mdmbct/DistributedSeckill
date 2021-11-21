@@ -28,10 +28,9 @@ public abstract class BaseFilter implements Filter {
     }
 
     @Override
-    public CompeteRes doNextFilter(Participant participant) {
+    public void doNextFilter(Participant participant, CompeteRes competeRes) {
         if (nextFilter != null) {
-           return nextFilter.doFilter(participant);
+           nextFilter.doFilter(participant, competeRes);
         }
-        return null;
     }
 }

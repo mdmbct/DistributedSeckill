@@ -1,7 +1,8 @@
 package cn.mdmbct.seckill.common.filter;
 
 import cn.mdmbct.seckill.common.Participant;
-import org.apache.curator.shaded.com.google.common.util.concurrent.RateLimiter;
+import com.google.common.util.concurrent.RateLimiter;
+
 
 import java.util.HashMap;
 import java.util.Map;
@@ -42,10 +43,11 @@ public class TokenBucketLimitingFilter extends BaseFilter {
      *                    {@link SingleNoTokenParticipantCache} <br>
      *                    {@link RedisNoTokenParticipantCache}
      */
-    public TokenBucketLimitingFilter(int tokenPerSec,
+    public TokenBucketLimitingFilter(int order,
+                                     int tokenPerSec,
                                      long timeout,
                                      NoTokenParticipantCache cache) {
-        super(FIRST_FILTER_ORDER);
+        super(order);
         this.rateLimiter = RateLimiter.create(tokenPerSec);
         this.timeout = timeout;
         this.cache = cache;
@@ -66,12 +68,13 @@ public class TokenBucketLimitingFilter extends BaseFilter {
      *                    {@link SingleNoTokenParticipantCache} <br>
      *                    {@link RedisNoTokenParticipantCache}
      */
-    public TokenBucketLimitingFilter(int tokenPerSec,
+    public TokenBucketLimitingFilter(int oreder,
+                                     int tokenPerSec,
                                      int warmupTime,
                                      TimeUnit unit,
                                      long timeout,
                                      NoTokenParticipantCache cache) {
-        super(FIRST_FILTER_ORDER);
+        super(oreder);
         this.rateLimiter = RateLimiter.create(tokenPerSec, warmupTime, unit);
         this.timeout = timeout;
         this.cache = cache;
@@ -79,26 +82,26 @@ public class TokenBucketLimitingFilter extends BaseFilter {
 
 
     @Override
-    public void doFilter(Participant participant, FilterRes res) {
+    public void doFilter(Participant participant) {
 
         if (cache == null) {
             // 缓存为空
             if (!rateLimiter.tryAcquire(timeout, TimeUnit.MILLISECONDS)) {
-                res.setFilterNotPassed(this);
+                getFilterContext().setFilterNotPassed(this);
             } else {
-                doNextFilter(participant, res, this);
+                doNextFilter(participant);
             }
         } else {
             // 缓存不为空
             // 在缓存里直接通过
             if (cache.check(participant.getId())) {
-                doNextFilter(participant, res, this);
+                doNextFilter(participant);
             } else if (!rateLimiter.tryAcquire(timeout, TimeUnit.MILLISECONDS)) {
-                res.setFilterNotPassed(this);
+                getFilterContext().setFilterNotPassed(this);
                 // 没拿到令牌 添加到缓存
                 cache.add(participant.getId());
             } else {
-                doNextFilter(participant, res, this);
+                doNextFilter(participant);
             }
         }
     }
@@ -184,6 +187,7 @@ public class TokenBucketLimitingFilter extends BaseFilter {
                 return false;
             } finally {
                 lock.unlock();
+                lockMap.remove(participantId);
             }
         }
     }

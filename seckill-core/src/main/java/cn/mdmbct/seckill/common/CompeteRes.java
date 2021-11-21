@@ -1,10 +1,9 @@
 package cn.mdmbct.seckill.common;
 
-import cn.mdmbct.seckill.common.filter.Filter;
+import cn.mdmbct.seckill.common.limiter.Limiter;
 import cn.mdmbct.seckill.common.lock.HoldLockState;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 import lombok.ToString;
 
 /**
@@ -34,14 +33,14 @@ public class CompeteRes {
     /**
      * 打破的规则（未通过的过滤器）
      */
-    private Filter filterNotPassed;
+    private Limiter filterNotPassed;
 
     public CompeteRes(HoldLockState holdLockState) {
         this.holdLockState = holdLockState;
         this.count = Integer.MIN_VALUE;
     }
 
-    public CompeteRes(Filter filterNotPassed) {
+    public CompeteRes(Limiter filterNotPassed) {
         this.filterNotPassed = filterNotPassed;
         this.holdLockState = HoldLockState.MISS;
         this.count = Integer.MIN_VALUE;

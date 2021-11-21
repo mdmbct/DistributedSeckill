@@ -1,4 +1,4 @@
-package cn.mdmbct.seckill.common.filter;
+package cn.mdmbct.seckill.common.limiter;
 
 import cn.mdmbct.seckill.common.Participant;
 
@@ -10,7 +10,7 @@ import cn.mdmbct.seckill.common.Participant;
  * @modified mdmbct
  * @since 0.1
  */
-public class LuckyTimesFilter extends BaseFilter {
+public class LuckyTimesFilter extends BaseLimiter {
 
 
     public LuckyTimesFilter(int order) {
@@ -18,7 +18,7 @@ public class LuckyTimesFilter extends BaseFilter {
     }
 
     @Override
-    public void doFilter(Participant participant, FilterRes res) {
+    public void doLimit(Participant participant, LimitContext context) {
 
     }
 

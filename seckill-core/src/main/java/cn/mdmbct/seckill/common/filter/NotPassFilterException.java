@@ -12,7 +12,7 @@ public class NotPassFilterException extends RuntimeException  {
 
     private static final long serialVersionUID = 4151951668625008121L;
 
-    public NotPassFilterException(String message) {
-        super(message);
+    public NotPassFilterException(Filter filter) {
+        super(filter.notPassMsg());
     }
 }

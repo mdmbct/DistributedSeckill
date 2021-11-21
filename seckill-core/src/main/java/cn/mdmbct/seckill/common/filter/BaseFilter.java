@@ -1,6 +1,5 @@
 package cn.mdmbct.seckill.common.filter;
 
-import cn.mdmbct.seckill.common.CompeteRes;
 import cn.mdmbct.seckill.common.Participant;
 import lombok.RequiredArgsConstructor;
 
@@ -28,9 +27,10 @@ public abstract class BaseFilter implements Filter {
     }
 
     @Override
-    public void doNextFilter(Participant participant, CompeteRes competeRes) {
+    public void doNextFilter(Participant participant, FilterRes res, Filter curFilter) {
         if (nextFilter != null) {
-           nextFilter.doFilter(participant, competeRes);
+            res.addFilterPassed(curFilter);
+           nextFilter.doFilter(participant, res);
         }
     }
 }

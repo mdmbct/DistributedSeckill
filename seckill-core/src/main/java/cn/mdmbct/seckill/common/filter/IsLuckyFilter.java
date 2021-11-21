@@ -1,6 +1,5 @@
 package cn.mdmbct.seckill.common.filter;
 
-import cn.mdmbct.seckill.common.CompeteRes;
 import cn.mdmbct.seckill.common.Participant;
 
 /**
@@ -17,8 +16,8 @@ public class IsLuckyFilter extends BaseFilter {
     }
 
     @Override
-    public void doFilter(Participant participant, CompeteRes competeRes) {
-
+    public void doFilter(Participant participant, FilterRes res) {
+        doNextFilter(participant, res, this);
     }
 
     @Override

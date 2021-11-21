@@ -34,7 +34,6 @@ public class CompeteRes {
     /**
      * 打破的规则（未通过的过滤器）
      */
-    @Setter
     private Filter filterNotPassed;
 
     public CompeteRes(HoldLockState holdLockState) {

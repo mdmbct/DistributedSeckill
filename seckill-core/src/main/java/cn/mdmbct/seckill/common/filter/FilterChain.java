@@ -24,13 +24,11 @@ public class FilterChain {
         init();
     }
 
-    public CompeteRes doFilter(Participant participant) {
-        CompeteRes res = new CompeteRes(HoldLockState.MISS, Integer.MIN_VALUE);
+    public void doFilters(Participant participant) {
         if (filters.size() != 0) {
-            // 执行过滤器逻辑 并更新CompeteRes
-            filters.get(0).doFilter(participant, res);
+            // 执行过滤器逻辑 并更新Res
+            filters.get(0).doFilter(participant, new FilterRes());
         }
-        return res;
     }
 
 

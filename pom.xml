@@ -23,7 +23,7 @@
         <druid.version>1.2.6</druid.version>
         <curator.version>5.2.0</curator.version>
         <disruptor.version>3.4.4</disruptor.version>
-
+        <guava.version>18.0</guava.version>
         <lombok.version>1.18.20</lombok.version>
         <jedis.version>3.3.0</jedis.version>
         <redisson.version>3.13.6</redisson.version>
@@ -99,6 +99,11 @@
                 <groupId>org.apache.curator</groupId>
                 <artifactId>curator-recipes</artifactId>
                 <version>${curator.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>${guava.version}</version>
             </dependency>
 
             <dependency>

@@ -1,6 +1,5 @@
 package cn.mdmbct.seckill.common.filter;
 
-import cn.mdmbct.seckill.common.CompeteRes;
 import cn.mdmbct.seckill.common.Participant;
 
 /**
@@ -23,11 +22,12 @@ public class ParticipationNumFilter extends BaseFilter {
     }
 
     @Override
-    public void doFilter(Participant participant, CompeteRes competeRes) throws NotPassFilterException {
+    public void doFilter(Participant participant, FilterRes res) {
         if (getCurParticipationNum() >= participationNum) {
-            competeRes.setFilterNotPassed(this);
-            throw new NotPassFilterException(notPassMsg());
+            res.setFilterNotPassed(this);
+            return;
         }
+        doNextFilter(participant, res, this);
     }
 
     @Override

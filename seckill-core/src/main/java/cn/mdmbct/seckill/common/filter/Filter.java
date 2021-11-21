@@ -1,6 +1,5 @@
 package cn.mdmbct.seckill.common.filter;
 
-import cn.mdmbct.seckill.common.CompeteRes;
 import cn.mdmbct.seckill.common.Participant;
 
 /**
@@ -13,7 +12,8 @@ import cn.mdmbct.seckill.common.Participant;
  */
 public interface Filter extends Comparable<Filter> {
 
-    public static final int FIRST_FILTER_ORDER = -10;
+    int FIRST_FILTER_ORDER = Integer.MIN_VALUE;
+    int LAST_FILTER_ORDER = Integer.MAX_VALUE;
 
     /**
      * 获取调用顺序
@@ -30,13 +30,11 @@ public interface Filter extends Comparable<Filter> {
     void nextFilter(Filter filter);
 
     /**
-     * 过滤逻辑 未抛出{@link NotPassFilterException}异常则表示通过过滤器
+     * 过滤逻辑
      *
      * @param participant 参与抽奖的用户
-     * @param competeRes  秒杀、抽奖等的结果，未通过的过滤器应设置在其中
-     * @throws NotPassFilterException 未通过过滤器后抛出异常
      */
-    void doFilter(Participant participant, CompeteRes competeRes) throws NotPassFilterException;
+    void doFilter(Participant participant, FilterRes res);
 
     /**
      * 清理工作
@@ -51,12 +49,10 @@ public interface Filter extends Comparable<Filter> {
 
     /**
      * 执行下一个过滤器的逻辑
-     *
-     * @param participant 参与抽奖的用户
-     * @param competeRes  秒杀、抽奖等的结果，未通过的过滤器应设置在其中
-     * @throws NotPassFilterException 未通过过滤器后抛出异常
+     *  @param participant 参与抽奖的用户
+     * @param curFilter 当前过滤器 即调用此方法的过滤器
      */
-    void doNextFilter(Participant participant, CompeteRes competeRes) throws NotPassFilterException;
+    void doNextFilter(Participant participant, FilterRes res, Filter curFilter);
 
     String notPassMsg();
 }

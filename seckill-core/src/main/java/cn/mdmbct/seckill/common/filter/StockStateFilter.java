@@ -1,6 +1,5 @@
 package cn.mdmbct.seckill.common.filter;
 
-import cn.mdmbct.seckill.common.CompeteRes;
 import cn.mdmbct.seckill.common.Participant;
 
 import java.util.concurrent.locks.ReentrantReadWriteLock;
@@ -27,14 +26,19 @@ public class StockStateFilter extends BaseFilter {
     }
 
     @Override
-    public void doFilter(Participant participant, CompeteRes competeRes) {
+    public void doFilter(Participant participant, FilterRes res) {
 
-        stateLock.readLock().lock();
-        if (!haveStock) {
-            competeRes.setFilterNotPassed(this);
-            throw new NotPassFilterException(notPassMsg());
+        try {
+            stateLock.readLock().lock();
+            if (!haveStock) {
+                res.setFilterNotPassed(this);
+                return;
+            }
+            doNextFilter(participant, res, this);
+        } finally {
+            stateLock.readLock().unlock();
         }
-        stateLock.readLock().unlock();
+
     }
 
     @Override

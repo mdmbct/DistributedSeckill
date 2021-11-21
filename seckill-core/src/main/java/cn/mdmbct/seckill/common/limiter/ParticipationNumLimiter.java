@@ -1,33 +1,33 @@
-package cn.mdmbct.seckill.common.filter;
+package cn.mdmbct.seckill.common.limiter;
 
 import cn.mdmbct.seckill.common.Participant;
 
 /**
- * 参与次数过滤器
+ * 参与次数限制
  *
  * @author mdmbct  mdmbct@outlook.com
  * @date 2021/11/21 9:34
  * @modified mdmbct
  * @since 0.1
  */
-public class ParticipationNumFilter extends BaseFilter {
+public class ParticipationNumLimiter extends BaseLimiter {
 
 
     private final int participationNum;
 
 
-    public ParticipationNumFilter(int order, int participationNum) {
+    public ParticipationNumLimiter(int order, int participationNum) {
         super(order);
         this.participationNum = participationNum;
     }
 
     @Override
-    public void doFilter(Participant participant, FilterRes res) {
+    public void doLimit(Participant participant, LimitContext context) {
         if (getCurParticipationNum() >= participationNum) {
-            res.setFilterNotPassed(this);
+            context.setLimiterNotPassed(this);
             return;
         }
-        doNextFilter(participant, res, this);
+        doNextLimit(participant, context);
     }
 
     @Override

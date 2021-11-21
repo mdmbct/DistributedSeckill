@@ -1,19 +1,27 @@
 package cn.mdmbct.seckill.common.filter;
 
 import cn.mdmbct.seckill.common.Participant;
+import cn.mdmbct.seckill.common.limiter.Limiter;
 
 /**
- * 规则过滤器
+ * 过滤器 针对所有请求做过滤
  *
  * @author mdmbct  mdmbct@outlook.com
- * @date 2021/11/19 23:22
+ * @date 2021/11/21 17:24
  * @modified mdmbct
  * @since 0.1
  */
-public interface Filter extends Comparable<Filter> {
+public interface Filter extends Comparable<Filter>{
 
     int FIRST_FILTER_ORDER = Integer.MIN_VALUE;
     int LAST_FILTER_ORDER = Integer.MAX_VALUE;
+
+    void setFilterContext(FilterContext context);
+
+    FilterContext getFilterContext();
+
+    String notPassMsg();
+
 
     /**
      * 获取调用顺序
@@ -23,7 +31,7 @@ public interface Filter extends Comparable<Filter> {
     int getOrder();
 
     /**
-     * 设置下一个过滤器 {@link Filter#getOrder()}获取的到值越小 过滤器越靠前
+     * 设置下一个过滤器 {@link Limiter#getOrder()}获取的到值越小 过滤器越靠前
      *
      * @param filter 下一个过滤器
      */
@@ -34,7 +42,7 @@ public interface Filter extends Comparable<Filter> {
      *
      * @param participant 参与抽奖的用户
      */
-    void doFilter(Participant participant, FilterRes res);
+    void doFilter(Participant participant);
 
     /**
      * 清理工作 如果需要做清理工作必须重写此方法
@@ -51,10 +59,8 @@ public interface Filter extends Comparable<Filter> {
 
     /**
      * 执行下一个过滤器的逻辑
-     *  @param participant 参与抽奖的用户
-     * @param curFilter 当前过滤器 即调用此方法的过滤器
+     * @param participant 参与抽奖的用户
+     *
      */
-    void doNextFilter(Participant participant, FilterRes res, Filter curFilter);
-
-    String notPassMsg();
+    void doNextFilter(Participant participant);
 }

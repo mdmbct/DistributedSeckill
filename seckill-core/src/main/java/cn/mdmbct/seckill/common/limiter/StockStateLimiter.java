@@ -1,12 +1,12 @@
-package cn.mdmbct.seckill.common.filter;
+package cn.mdmbct.seckill.common.limiter;
 
 import cn.mdmbct.seckill.common.Participant;
 
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 /**
- * 库存过滤器 线程竞争到锁后如果发现库存数（红包数）为0 需反向通知该过滤器 <br>
- * 该过滤器使用ReentrantReadWriteLock保证在更新“是否有库存”的时候，其他线程不能读取。<br>
+ * 库存限制 线程竞争到锁后如果发现库存数（红包数）为0 需反向通知 <br>
+ * 该限制使用ReentrantReadWriteLock保证在更新“是否有库存”的时候，其他线程不能读取。<br>
  * 注：ReentrantReadWriteLock允许多个读线程同时访问，但不允许写线程和读线程、写线程和写线程同时访问
  *
  * @author mdmbct  mdmbct@outlook.com
@@ -14,27 +14,27 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  * @modified mdmbct
  * @since 0.1
  */
-public class StockStateFilter extends BaseFilter {
+public class StockStateLimiter extends BaseLimiter {
 
     private boolean haveStock = true;
 
-    private ReentrantReadWriteLock stateLock;
+    private final ReentrantReadWriteLock stateLock;
 
-    public StockStateFilter(int order) {
+    public StockStateLimiter(int order) {
         super(order);
         this.stateLock = new ReentrantReadWriteLock();
     }
 
     @Override
-    public void doFilter(Participant participant, FilterRes res) {
+    public void doLimit(Participant participant, LimitContext context) {
 
         try {
             stateLock.readLock().lock();
             if (!haveStock) {
-                res.setFilterNotPassed(this);
+                context.setLimiterNotPassed(this);
                 return;
             }
-            doNextFilter(participant, res, this);
+            doNextLimit(participant, context);
         } finally {
             stateLock.readLock().unlock();
         }

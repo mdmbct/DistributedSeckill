@@ -1,8 +1,6 @@
 package cn.mdmbct.seckill.common.filter;
 
-import cn.mdmbct.seckill.common.CompeteRes;
 import cn.mdmbct.seckill.common.Participant;
-import cn.mdmbct.seckill.common.lock.HoldLockState;
 
 import java.util.Collections;
 import java.util.List;
@@ -11,7 +9,7 @@ import java.util.List;
  * 过滤器链
  *
  * @author mdmbct  mdmbct@outlook.com
- * @date 2021/11/19 23:50
+ * @date 2021/11/21 17:37
  * @modified mdmbct
  * @since 0.1
  */
@@ -24,10 +22,15 @@ public class FilterChain {
         init();
     }
 
-    public void doFilters(Participant participant) {
+    /**
+     *  被多个线程调用到的方法
+     * @param participant 用户
+     */
+    public void doFilter(Participant participant) {
         if (filters.size() != 0) {
-            // 执行过滤器逻辑 并更新Res
-            filters.get(0).doFilter(participant, new FilterRes());
+            final Filter firstFilter = filters.get(0);
+            firstFilter.setFilterContext(new FilterContext(Thread.currentThread()));
+            firstFilter.doFilter(participant);
         }
     }
 
@@ -49,7 +52,10 @@ public class FilterChain {
      * 清理工作
      */
     public void clear() {
-       filters.forEach(Filter::clear);
+        filters.forEach(Filter::clear);
     }
 
+    public FilterContext getFilterContext() {
+        return filters.get(0).getFilterContext();
+    }
 }

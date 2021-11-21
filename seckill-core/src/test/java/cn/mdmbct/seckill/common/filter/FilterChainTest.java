@@ -1,6 +1,5 @@
 package cn.mdmbct.seckill.common.filter;
 
-import cn.mdmbct.seckill.common.CompeteRes;
 import cn.mdmbct.seckill.common.Participant;
 import org.junit.Before;
 import org.junit.Test;
@@ -11,8 +10,6 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
-
-import static org.junit.Assert.*;
 
 public class FilterChainTest {
 

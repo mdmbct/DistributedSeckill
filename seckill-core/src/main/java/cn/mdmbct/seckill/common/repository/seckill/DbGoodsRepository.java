@@ -2,7 +2,7 @@ package cn.mdmbct.seckill.common.repository.seckill;
 
 import cn.mdmbct.seckill.common.lock.HoldLockState;
 import cn.mdmbct.seckill.common.lock.ProductLock;
-import cn.mdmbct.seckill.common.CompeteRes;
+import cn.mdmbct.seckill.common.lock.CompeteLockRes;
 import cn.mdmbct.seckill.common.repository.ProductsRepository;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -40,51 +40,51 @@ public class DbGoodsRepository implements ProductsRepository {
     private final Consumer<CountUpdateParams> dbUpdateOp;
 
     @Override
-    public CompeteRes incrOne(String id) {
+    public CompeteLockRes incrOne(String id) {
         if (lock.tryLock(id)) {
             try {
                 // 操作数据库
-                return new CompeteRes(HoldLockState.GET, dbIncrOneOp.apply(id));
+                return new CompeteLockRes(HoldLockState.GET, dbIncrOneOp.apply(id));
             } catch (Exception e) {
                 e.printStackTrace();
-                return new CompeteRes(HoldLockState.EXCEPTION);
+                return new CompeteLockRes(HoldLockState.EXCEPTION);
             } finally {
                 lock.unLock(id);
             }
         }
-        return new CompeteRes(HoldLockState.MISS);
+        return new CompeteLockRes(HoldLockState.MISS);
     }
 
     @Override
-    public CompeteRes decrOne(String id) {
+    public CompeteLockRes decrOne(String id) {
 
         if (lock.tryLock(id)) {
             try {
-                return new CompeteRes(HoldLockState.GET, dbDecrOneOp.apply(id));
+                return new CompeteLockRes(HoldLockState.GET, dbDecrOneOp.apply(id));
             } catch (Exception e) {
                 e.printStackTrace();
-                return new CompeteRes(HoldLockState.EXCEPTION);
+                return new CompeteLockRes(HoldLockState.EXCEPTION);
             } finally {
                 lock.unLock(id);
             }
         }
-        return new CompeteRes(HoldLockState.MISS);
+        return new CompeteLockRes(HoldLockState.MISS);
     }
 
     @Override
-    public CompeteRes updateCount(String id, int newCount) {
+    public CompeteLockRes updateCount(String id, int newCount) {
         if (lock.tryLock(id)) {
             try {
                 dbUpdateOp.accept(new CountUpdateParams(id, newCount));
-                return new CompeteRes(HoldLockState.GET, newCount);
+                return new CompeteLockRes(HoldLockState.GET, newCount);
             } catch (Exception e) {
                 e.printStackTrace();
-                return new CompeteRes(HoldLockState.EXCEPTION);
+                return new CompeteLockRes(HoldLockState.EXCEPTION);
             } finally {
                 lock.unLock(id);
             }
         }
-        return new CompeteRes(HoldLockState.MISS);
+        return new CompeteLockRes(HoldLockState.MISS);
     }
 
     @Getter

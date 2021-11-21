@@ -4,7 +4,7 @@ import cn.mdmbct.seckill.common.lock.HoldLockState;
 import cn.mdmbct.seckill.common.lock.ProductLock;
 import cn.mdmbct.seckill.common.redis.JedisRedisOps;
 import cn.mdmbct.seckill.common.redis.RedisOps;
-import cn.mdmbct.seckill.common.CompeteRes;
+import cn.mdmbct.seckill.common.lock.CompeteLockRes;
 import cn.mdmbct.seckill.common.repository.ProductsRepository;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.util.Pool;
@@ -54,58 +54,58 @@ public class RedisGoodsRepository implements ProductsRepository {
 
 
     @Override
-    public CompeteRes incrOne(String id) {
+    public CompeteLockRes incrOne(String id) {
 
         if (lock.tryLock(id)) {
             try {
-                return new CompeteRes(
+                return new CompeteLockRes(
                         HoldLockState.GET,
                         redisOps.incr(goodsCacheKey(id)).intValue()
                 );
             } catch (Exception e) {
                 e.printStackTrace();
-                return new CompeteRes(HoldLockState.EXCEPTION);
+                return new CompeteLockRes(HoldLockState.EXCEPTION);
             } finally {
                 lock.unLock(id);
             }
         }
-        return new CompeteRes(HoldLockState.MISS);
+        return new CompeteLockRes(HoldLockState.MISS);
     }
 
     @Override
-    public CompeteRes decrOne(String id) {
+    public CompeteLockRes decrOne(String id) {
 
         if (lock.tryLock(id)) {
             try {
-                return new CompeteRes(
+                return new CompeteLockRes(
                         HoldLockState.GET,
                         redisOps.decr(goodsCacheKey(id)).intValue()
                 );
             } catch (Exception e) {
                 e.printStackTrace();
-                return new CompeteRes(HoldLockState.EXCEPTION);
+                return new CompeteLockRes(HoldLockState.EXCEPTION);
             } finally {
                 lock.unLock(id);
             }
         }
-        return new CompeteRes(HoldLockState.MISS);
+        return new CompeteLockRes(HoldLockState.MISS);
     }
 
     @Override
-    public CompeteRes updateCount(String id, int newCount) {
+    public CompeteLockRes updateCount(String id, int newCount) {
 
         if (lock.tryLock(id)) {
             try {
                 redisOps.set(goodsCacheKey(id), String.valueOf(newCount));
-                return new CompeteRes(HoldLockState.GET, newCount);
+                return new CompeteLockRes(HoldLockState.GET, newCount);
             } catch (Exception e) {
                 e.printStackTrace();
-                return new CompeteRes(HoldLockState.EXCEPTION);
+                return new CompeteLockRes(HoldLockState.EXCEPTION);
             } finally {
                 lock.unLock(id);
             }
         }
-        return new CompeteRes(HoldLockState.MISS);
+        return new CompeteLockRes(HoldLockState.MISS);
     }
 
 

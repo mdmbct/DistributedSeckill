@@ -1,6 +1,6 @@
 package cn.mdmbct.seckill.common.repository;
 
-import cn.mdmbct.seckill.common.CompeteRes;
+import cn.mdmbct.seckill.common.lock.CompeteLockRes;
 
 /**
  * 商品、奖品管理的库 负责实际存储它们及数量的控制
@@ -17,14 +17,14 @@ public interface ProductsRepository {
      * @param id 奖品id
      * @return 是否增加成功
      */
-    CompeteRes incrOne(String id);
+    CompeteLockRes incrOne(String id);
 
     /**
      * 减少奖品数量 减少1
      * @param id 奖品id
      * @return 是否减少成功
      */
-    CompeteRes decrOne(String id);
+    CompeteLockRes decrOne(String id);
 
     /**
      * 修改奖品数量
@@ -32,6 +32,6 @@ public interface ProductsRepository {
      * @param newCount 修改数量
      * @return 是否修改成功
      */
-    CompeteRes updateCount(String id, int newCount);
+    CompeteLockRes updateCount(String id, int newCount);
 
 }

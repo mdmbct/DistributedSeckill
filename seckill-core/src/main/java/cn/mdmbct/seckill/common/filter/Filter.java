@@ -1,6 +1,7 @@
 package cn.mdmbct.seckill.common.filter;
 
 import cn.mdmbct.seckill.common.Participant;
+import cn.mdmbct.seckill.common.context.FilterContext;
 
 /**
  * 过滤器 针对所有请求做过滤
@@ -12,7 +13,7 @@ import cn.mdmbct.seckill.common.Participant;
  */
 public interface Filter extends Comparable<Filter>{
 
-    int FIRST_FILTER_ORDER = Integer.MIN_VALUE;
+    int FIRST_FILTER_ORDER = 0;
     int LAST_FILTER_ORDER = Integer.MAX_VALUE;
 
     void setFilterContext(FilterContext context);
@@ -39,9 +40,10 @@ public interface Filter extends Comparable<Filter>{
     /**
      * 过滤逻辑
      *
-     * @param participant 参与抽奖的用户
+     * @param participant
+     * @param productId
      */
-    void doFilter(Participant participant);
+    void doFilter(Participant participant, String productId);
 
     /**
      * 清理工作 如果需要做清理工作必须重写此方法
@@ -52,14 +54,15 @@ public interface Filter extends Comparable<Filter>{
 
     @Override
     default int compareTo(Filter o) {
-        return o.getOrder() - this.getOrder();
+        return this.getOrder() - o.getOrder();
     }
 
 
     /**
      * 执行下一个过滤器的逻辑
-     * @param participant 参与抽奖的用户
      *
+     * @param participant
+     * @param productId
      */
-    void doNextFilter(Participant participant);
+    void doNextFilter(Participant participant, String productId);
 }

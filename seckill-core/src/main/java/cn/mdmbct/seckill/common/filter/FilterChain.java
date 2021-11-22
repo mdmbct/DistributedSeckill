@@ -1,6 +1,7 @@
 package cn.mdmbct.seckill.common.filter;
 
 import cn.mdmbct.seckill.common.Participant;
+import cn.mdmbct.seckill.common.context.FilterContext;
 
 import java.util.Collections;
 import java.util.List;
@@ -26,11 +27,11 @@ public class FilterChain {
      *  被多个线程调用到的方法
      * @param participant 用户
      */
-    public void doFilter(Participant participant) {
+    public void doFilter(Participant participant, String productId) {
         if (filters.size() != 0) {
             final Filter firstFilter = filters.get(0);
-            firstFilter.setFilterContext(new FilterContext(Thread.currentThread()));
-            firstFilter.doFilter(participant);
+            firstFilter.setFilterContext(new FilterContext(Thread.currentThread(), participant, productId));
+            firstFilter.doFilter(participant, productId);
         }
     }
 

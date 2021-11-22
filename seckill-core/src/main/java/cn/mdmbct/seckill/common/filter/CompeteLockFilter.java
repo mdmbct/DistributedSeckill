@@ -1,6 +1,7 @@
 package cn.mdmbct.seckill.common.filter;
 
 import cn.mdmbct.seckill.common.Participant;
+import cn.mdmbct.seckill.common.lock.ProductLock;
 
 /**
  * 竞争锁过滤，倒数第二个过滤器 <br>
@@ -13,17 +14,28 @@ import cn.mdmbct.seckill.common.Participant;
  */
 public class CompeteLockFilter extends BaseFilter {
 
-    public CompeteLockFilter() {
+    private final ProductLock lock;
+
+    public CompeteLockFilter(ProductLock lock) {
         super(LAST_FILTER_ORDER - 1);
+        this.lock = lock;
     }
 
     @Override
     public String notPassMsg() {
-        return null;
+        return "下次加油！";
     }
 
     @Override
-    public void doFilter(Participant participant) {
-
+    public void doFilter(Participant participant, String productId) {
+        // 创建锁并尝试获取锁
+        final boolean b = lock.tryLock(productId);
+        if (b) {
+            System.out.println(Thread.currentThread().getId());
+            getFilterContext().setLock(lock);
+            doNextFilter(participant, productId);
+        } else {
+            getFilterContext().setFilterNotPassed(this);
+        }
     }
 }

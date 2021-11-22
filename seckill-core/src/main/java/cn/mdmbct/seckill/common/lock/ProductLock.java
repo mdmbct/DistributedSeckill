@@ -26,4 +26,6 @@ public interface ProductLock {
      * @param id 商品、奖品的id
      */
     void unLock(String id);
+
+    ProductLockType getType();
 }

@@ -98,4 +98,9 @@ public class ZkDistributeLock implements ProductLock {
             e.printStackTrace();
         }
     }
+
+    @Override
+    public ProductLockType getType() {
+        return ProductLockType.ZK;
+    }
 }

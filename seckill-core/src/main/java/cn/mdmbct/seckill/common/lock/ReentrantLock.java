@@ -58,4 +58,8 @@ public class ReentrantLock implements ProductLock {
         }
     }
 
+    @Override
+    public ProductLockType getType() {
+        return ProductLockType.REENTRANT;
+    }
 }

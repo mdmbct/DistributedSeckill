@@ -83,6 +83,12 @@ public class RedissonDistributeLock implements ProductLock {
         redissonClient.getLock(cacheKey(id)).unlock();
     }
 
+
+    @Override
+    public ProductLockType getType() {
+        return ProductLockType.REDISSON;
+    }
+
     private String cacheKey(String id) {
         return lockCachePrefix + id;
     }

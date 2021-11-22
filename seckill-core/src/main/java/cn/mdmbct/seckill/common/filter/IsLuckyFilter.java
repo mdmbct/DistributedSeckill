@@ -19,7 +19,7 @@ public class IsLuckyFilter extends BaseFilter {
     }
 
     @Override
-    public void doFilter(Participant participant) {
-        doNextFilter(participant);
+    public void doFilter(Participant participant, String productId) {
+        doNextFilter(participant, productId);
     }
 }

@@ -23,12 +23,12 @@ public class ParticipationNumFilter extends BaseFilter {
     }
 
     @Override
-    public void doFilter(Participant participant) {
+    public void doFilter(Participant participant, String productId) {
         if (getCurParticipationNum() >= participationNum) {
             getFilterContext().setFilterNotPassed(this);
             return;
         }
-        doNextFilter(participant);
+        doNextFilter(participant, productId);
     }
 
     private int getCurParticipationNum() {

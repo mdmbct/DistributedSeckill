@@ -81,26 +81,28 @@ public class TokenBucketLimitingFilter extends BaseFilter {
 
 
     @Override
-    public void doFilter(Participant participant) {
+    public void doFilter(Participant participant, String productId) {
+
+        System.out.println(Thread.currentThread().getId());
 
         if (cache == null) {
             // 缓存为空
             if (!rateLimiter.tryAcquire(timeout, TimeUnit.MILLISECONDS)) {
                 getFilterContext().setFilterNotPassed(this);
             } else {
-                doNextFilter(participant);
+                doNextFilter(participant, productId);
             }
         } else {
             // 缓存不为空
             // 在缓存里直接通过
             if (cache.check(participant.getId())) {
-                doNextFilter(participant);
+                doNextFilter(participant, productId);
             } else if (!rateLimiter.tryAcquire(timeout, TimeUnit.MILLISECONDS)) {
                 getFilterContext().setFilterNotPassed(this);
                 // 没拿到令牌 添加到缓存
                 cache.add(participant.getId());
             } else {
-                doNextFilter(participant);
+                doNextFilter(participant, productId);
             }
         }
     }

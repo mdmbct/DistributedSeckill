@@ -1,6 +1,7 @@
 package cn.mdmbct.seckill.common.filter;
 
 import cn.mdmbct.seckill.common.Participant;
+import cn.mdmbct.seckill.common.context.FilterContext;
 
 /**
  * @author mdmbct  mdmbct@outlook.com
@@ -17,6 +18,11 @@ public abstract class BaseFilter implements Filter {
     protected final int order;
 
     public BaseFilter(int order) {
+
+        if (order < 0) {
+            throw new IllegalArgumentException("The param 'order' must more than zero");
+        }
+
         this.order = order;
         contextThreadLocal = new ThreadLocal<>();
     }
@@ -43,10 +49,10 @@ public abstract class BaseFilter implements Filter {
     }
 
     @Override
-    public void doNextFilter(Participant participant) {
+    public void doNextFilter(Participant participant, String productId) {
         getFilterContext().addFilterPassed(this);
         if (nextFilter != null) {
-            nextFilter.doNextFilter(participant);
+            nextFilter.doFilter(participant, productId);
         }
     }
 

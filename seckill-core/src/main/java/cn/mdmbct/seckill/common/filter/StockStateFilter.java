@@ -31,14 +31,14 @@ public class StockStateFilter extends BaseFilter {
     }
 
     @Override
-    public void doFilter(Participant participant) {
+    public void doFilter(Participant participant, String productId) {
         try {
             stateLock.readLock().lock();
             if (!haveStock) {
                 getFilterContext().setFilterNotPassed(this);
                 return;
             }
-            doNextFilter(participant);
+            doNextFilter(participant, productId);
         } finally {
             stateLock.readLock().unlock();
         }

@@ -9,7 +9,7 @@
     <packaging>pom</packaging>
     <version>0.1</version>
     <modules>
-        <module>seckill-common</module>
+        <module>seckill-core</module>
         <module>seckill-app</module>
         <module>seckill-starter</module>
     </modules>
@@ -17,13 +17,13 @@
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
-        <seckill-common.version>0.1</seckill-common.version>
+        <seckill-core.version>0.1</seckill-core.version>
         <spring-boot.version>2.5.3</spring-boot.version>
         <mysql.version>8.0.26</mysql.version>
         <druid.version>1.2.6</druid.version>
         <curator.version>5.2.0</curator.version>
         <disruptor.version>3.4.4</disruptor.version>
-
+        <guava.version>18.0</guava.version>
         <lombok.version>1.18.20</lombok.version>
         <jedis.version>3.3.0</jedis.version>
         <redisson.version>3.13.6</redisson.version>
@@ -36,8 +36,8 @@
         <dependencies>
             <dependency>
                 <groupId>cn.mdmbct</groupId>
-                <artifactId>seckill-common</artifactId>
-                <version>${seckill-common.version}</version>
+                <artifactId>seckill-core</artifactId>
+                <version>${seckill-core.version}</version>
             </dependency>
 
             <dependency>
@@ -99,6 +99,11 @@
                 <groupId>org.apache.curator</groupId>
                 <artifactId>curator-recipes</artifactId>
                 <version>${curator.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>${guava.version}</version>
             </dependency>
 
             <dependency>

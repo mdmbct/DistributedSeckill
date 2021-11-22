@@ -1,7 +1,5 @@
 package cn.mdmbct.seckill.common.lock;
 
-import cn.mdmbct.seckill.common.limiter.Limiter;
-import cn.mdmbct.seckill.common.lock.HoldLockState;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;

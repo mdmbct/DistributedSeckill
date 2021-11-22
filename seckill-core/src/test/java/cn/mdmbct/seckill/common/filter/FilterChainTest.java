@@ -20,7 +20,6 @@ public class FilterChainTest {
 
         List<Filter> filters = new ArrayList<>();
         filters.add(new TokenBucketLimitingFilter(
-                Filter.FIRST_FILTER_ORDER,
                 100,
                 100,
                 null

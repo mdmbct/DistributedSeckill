@@ -1,7 +1,5 @@
-package cn.mdmbct.seckill.common;
+package cn.mdmbct.seckill.common.lock;
 
-import cn.mdmbct.seckill.common.limiter.Limiter;
-import cn.mdmbct.seckill.common.lock.HoldLockState;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
@@ -17,7 +15,7 @@ import lombok.ToString;
 @Getter
 @ToString
 @RequiredArgsConstructor
-public class CompeteRes {
+public class CompeteLockRes {
 
     /**
      * 线程获取锁的状态
@@ -30,19 +28,8 @@ public class CompeteRes {
      */
     private final int count;
 
-    /**
-     * 打破的规则（未通过的过滤器）
-     */
-    private Limiter filterNotPassed;
-
-    public CompeteRes(HoldLockState holdLockState) {
+    public CompeteLockRes(HoldLockState holdLockState) {
         this.holdLockState = holdLockState;
-        this.count = Integer.MIN_VALUE;
-    }
-
-    public CompeteRes(Limiter filterNotPassed) {
-        this.filterNotPassed = filterNotPassed;
-        this.holdLockState = HoldLockState.MISS;
         this.count = Integer.MIN_VALUE;
     }
 }

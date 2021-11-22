@@ -23,6 +23,7 @@ public abstract class BaseFilter implements Filter {
 
     @Override
     public void setFilterContext(FilterContext context) {
+        contextThreadLocal.remove();
         contextThreadLocal.set(context);
     }
 

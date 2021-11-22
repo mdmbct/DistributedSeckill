@@ -2,7 +2,7 @@ package cn.mdmbct.seckill.common.repository.seckill;
 
 import cn.mdmbct.seckill.common.lock.HoldLockState;
 import cn.mdmbct.seckill.common.lock.ProductLock;
-import cn.mdmbct.seckill.common.CompeteRes;
+import cn.mdmbct.seckill.common.lock.CompeteLockRes;
 import cn.mdmbct.seckill.common.repository.Product;
 import cn.mdmbct.seckill.common.repository.ProductsRepository;
 
@@ -43,26 +43,26 @@ public class SingleGoodsRepository implements ProductsRepository {
 //    }
 
     @Override
-    public CompeteRes incrOne(String id) {
+    public CompeteLockRes incrOne(String id) {
         if (lock.tryLock(id)) {
             try {
-                return new CompeteRes(HoldLockState.GET, goodsCache.get(id).incrOne());
+                return new CompeteLockRes(HoldLockState.GET, goodsCache.get(id).incrOne());
             } catch (Exception e) {
                 e.printStackTrace();
-                return new CompeteRes(HoldLockState.EXCEPTION);
+                return new CompeteLockRes(HoldLockState.EXCEPTION);
             } finally {
                 lock.unLock(id);
             }
         }
-        return new CompeteRes(HoldLockState.MISS);
+        return new CompeteLockRes(HoldLockState.MISS);
     }
 
     @Override
-    public CompeteRes decrOne(String id) {
+    public CompeteLockRes decrOne(String id) {
 
         if (lock.tryLock(id)) {
             try {
-                return new CompeteRes(HoldLockState.GET, goodsCache.get(id).decrOne());
+                return new CompeteLockRes(HoldLockState.GET, goodsCache.get(id).decrOne());
 //                final Goods goods = get(id);
 //                readWriteLock.writeLock().lock();
 //                try {
@@ -72,27 +72,27 @@ public class SingleGoodsRepository implements ProductsRepository {
 //                }
             } catch (Exception e) {
                 e.printStackTrace();
-                return new CompeteRes(HoldLockState.EXCEPTION);
+                return new CompeteLockRes(HoldLockState.EXCEPTION);
             } finally {
                 lock.unLock(id);
             }
         }
-        return new CompeteRes(HoldLockState.MISS);
+        return new CompeteLockRes(HoldLockState.MISS);
     }
 
     @Override
-    public CompeteRes updateCount(String id, int newCount) {
+    public CompeteLockRes updateCount(String id, int newCount) {
         if (lock.tryLock(id)) {
             try {
                 goodsCache.get(id).update(newCount);
-                return new CompeteRes(HoldLockState.GET, newCount);
+                return new CompeteLockRes(HoldLockState.GET, newCount);
             } catch (Exception e) {
                 e.printStackTrace();
-                return new CompeteRes(HoldLockState.EXCEPTION);
+                return new CompeteLockRes(HoldLockState.EXCEPTION);
             } finally {
                 lock.unLock(id);
             }
         }
-        return new CompeteRes(HoldLockState.MISS);
+        return new CompeteLockRes(HoldLockState.MISS);
     }
 }

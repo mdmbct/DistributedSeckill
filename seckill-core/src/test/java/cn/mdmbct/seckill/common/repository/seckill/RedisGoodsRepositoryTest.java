@@ -2,7 +2,7 @@ package cn.mdmbct.seckill.common.repository.seckill;
 
 import cn.mdmbct.seckill.common.lock.ZkDistributeLock;
 import cn.mdmbct.seckill.common.redis.JedisProperties;
-import cn.mdmbct.seckill.common.CompeteRes;
+import cn.mdmbct.seckill.common.lock.CompeteLockRes;
 import cn.mdmbct.seckill.common.repository.Product;
 import cn.mdmbct.seckill.common.repository.ProductsRepository;
 import org.junit.Before;
@@ -90,7 +90,7 @@ public class RedisGoodsRepositoryTest {
         for (int i = 0; i < killNum; i++) {
             long userId = i;
             final Runnable task = () -> {
-                final CompeteRes competeResult = repository.decrOne("1");
+                final CompeteLockRes competeResult = repository.decrOne("1");
 //                LOGGER.info("用户id: " + userId + competeResult);
                 System.out.println("用户id: " + userId + competeResult);
                 latch.countDown();
@@ -122,7 +122,7 @@ public class RedisGoodsRepositoryTest {
                 long userId = i;
                 int finalJ = j;
                 final Runnable task = () -> {
-                    final CompeteRes competeResult = repository.decrOne(String.valueOf(finalJ));
+                    final CompeteLockRes competeResult = repository.decrOne(String.valueOf(finalJ));
 //                LOGGER.info("用户id: " + userId + competeResult);
                     System.out.println("用户id: " + userId + competeResult);
                     latch.countDown();

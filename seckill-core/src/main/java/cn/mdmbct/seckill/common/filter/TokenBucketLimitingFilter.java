@@ -12,6 +12,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * 限流过滤器 使用令牌桶 <br>
+ * 只能通过拿到令牌的线程 <br>
  * 该限流对引用该模块的微服务有效 即是单机的限流 默认为第一个过滤器
  *
  * @author mdmbct  mdmbct@outlook.com
@@ -43,11 +44,10 @@ public class TokenBucketLimitingFilter extends BaseFilter {
      *                    {@link SingleNoTokenParticipantCache} <br>
      *                    {@link RedisNoTokenParticipantCache}
      */
-    public TokenBucketLimitingFilter(int order,
-                                     int tokenPerSec,
+    public TokenBucketLimitingFilter(int tokenPerSec,
                                      long timeout,
                                      NoTokenParticipantCache cache) {
-        super(order);
+        super(FIRST_FILTER_ORDER);
         this.rateLimiter = RateLimiter.create(tokenPerSec);
         this.timeout = timeout;
         this.cache = cache;
@@ -68,13 +68,12 @@ public class TokenBucketLimitingFilter extends BaseFilter {
      *                    {@link SingleNoTokenParticipantCache} <br>
      *                    {@link RedisNoTokenParticipantCache}
      */
-    public TokenBucketLimitingFilter(int oreder,
-                                     int tokenPerSec,
+    public TokenBucketLimitingFilter(int tokenPerSec,
                                      int warmupTime,
                                      TimeUnit unit,
                                      long timeout,
                                      NoTokenParticipantCache cache) {
-        super(oreder);
+        super(FIRST_FILTER_ORDER);
         this.rateLimiter = RateLimiter.create(tokenPerSec, warmupTime, unit);
         this.timeout = timeout;
         this.cache = cache;

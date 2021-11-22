@@ -1,7 +1,6 @@
 package cn.mdmbct.seckill.common.filter;
 
 import cn.mdmbct.seckill.common.Participant;
-import cn.mdmbct.seckill.common.limiter.Limiter;
 
 /**
  * 过滤器 针对所有请求做过滤

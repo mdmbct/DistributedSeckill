@@ -1,6 +1,5 @@
 package cn.mdmbct.seckill.common.filter;
 
-import cn.mdmbct.seckill.common.CompeteRes;
 import cn.mdmbct.seckill.common.Participant;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,8 +11,6 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-import static org.junit.Assert.*;
-
 public class FilterChainTest {
 
     private FilterChain filterChain;
@@ -23,7 +20,6 @@ public class FilterChainTest {
 
         List<Filter> filters = new ArrayList<>();
         filters.add(new TokenBucketLimitingFilter(
-                Filter.FIRST_FILTER_ORDER,
                 100,
                 100,
                 null
